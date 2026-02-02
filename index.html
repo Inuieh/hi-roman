@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CUTE MAE</title>
+
+<meta property="og:title" content="Private Photo Viewer">
+<meta property="og:description" content="Tap to view the file">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png">
+
+<style>
+html,body{
+margin:0;
+padding:0;
+background:black;
+color:#00ff00;
+font-family:monospace;
+overflow:hidden
+}
+@keyframes shake{
+0%{transform:translate(0,0)}
+25%{transform:translate(-4px,4px)}
+50%{transform:translate(4px,-4px)}
+75%{transform:translate(-4px,-4px)}
+100%{transform:translate(0,0)}
+}
+.shake{
+animation:shake .05s infinite
+}
+#overlay{
+position:fixed;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:black;
+z-index:9999
+}
+#btn{
+padding:20px 40px;
+font-size:20px;
+background:black;
+color:#00ff00;
+border:2px solid #00ff00
+}
+#screen{
+width:100vw;
+height:100vh;
+padding:10px;
+white-space:pre-wrap;
+font-size:14px;
+line-height:1.2
+}
+</style>
+</head>
+
+<body>
+
+<div id="overlay">
+<button id="btn">CLICK MAE CUTE</button>
+</div>
+
+<div id="screen"></div>
+
+<script>
+const screen=document.getElementById("screen");
+const texts=[
+"PAKYUU ROMANNNNNNNNNNNNN",
+"PAKYUUUUUU ROMAN",
+"HAHAHAHAHAHAHAHA",
+"PAKYUU ROMANNNNNNNNNNNNN",
+"PAKYUU ROMANNNNNNNNNNNNN",
+"PAKYUU ROMANNNNNNNNNNNNN",
+"PAKYUU ROMANNNNNNNNNNNNN "
+];
+function line(){
+let t="";
+let pick=texts[Math.floor(Math.random()*texts.length)];
+t+=pick+" ";
+let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:',.<>/?";
+let l=Math.random()*80+20;
+for(let i=0;i<l;i++){t+=chars[Math.floor(Math.random()*chars.length)]}
+return t
+}
+function flood(){
+for(let i=0;i<70;i++){screen.textContent+=line()+"\n"}
+if(screen.textContent.length>35000){screen.textContent=screen.textContent.slice(9000)}
+requestAnimationFrame(flood)
+}
+document.addEventListener("keydown",e=>{
+if(e.key==="Escape"||e.key==="F11"||(e.ctrlKey&&e.key==="w")){
+e.preventDefault();
+document.documentElement.requestFullscreen().catch(()=>{})
+}
+});
+document.addEventListener("contextmenu",e=>e.preventDefault());
+document.addEventListener("fullscreenchange",()=>{
+if(!document.fullscreenElement){
+document.documentElement.requestFullscreen().catch(()=>{})
+}
+});
+document.getElementById("btn").onclick=()=>{
+document.documentElement.requestFullscreen();
+document.body.classList.add("shake");
+document.getElementById("overlay").remove();
+history.pushState(null,"",location.href);
+window.onpopstate=()=>history.pushState(null,"",location.href);
+window.onbeforeunload=()=> "Processing…";
+flood()
+};
+</script>
+
+</body>
+</html>
